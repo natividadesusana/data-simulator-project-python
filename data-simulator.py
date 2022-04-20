@@ -17,15 +17,22 @@ class DataSimulator:
             [sg.Text(self.GenerateDataValue())],
             [sg.Button('Roll the dice again'), sg.Button('Finish')]
         ]
+        self.layout3 = [
+            [sg.Text('Click to generate a new number!')],
+            [sg.Button('play')]
+        ]
+        self.layout4 = [
+            [sg.Text('Your number is:')],
+            [sg.Text(self.GenerateDataValue())],
+            [sg.Button('Finish')]
+        ]
         self.finish_message = [
             [sg.Text('We appreciate your participation!')]
-        ]
-        self.choice_message = [
-            [sg.Text('Choose an option [YES/NO]!')]
         ]
         self.erro_message = [
             [sg.Text('There was an error receiving your reply!')]
         ]
+
 
     def Start(self):
         # Criando uma janela
@@ -34,36 +41,49 @@ class DataSimulator:
         self.events, self.values = self.window.Read()
         # Gerando alguma coisa com os valores
         try:
-            if self.events == 'yes' or self.events == 'y':
+            if self.events == 'yes':
                 return self.PlayAgain()
-            elif self.events == 'no' or self.events == 'n':
-                return self.FinishMessage()
             else:
-                return self.ChoiceMessage()
+                return self.FinishMessage()
         except:
                 return self.ErroMessage()
 
     def GenerateDataValue(self):
-        return random.randint(self.minimum_value, self.maximum_value)
+        return '🎲', random.randint(self.minimum_value, self.maximum_value)
 
     def PlayAgain(self):
         self.window = sg.Window('Data Simulator', layout=self.layout2)
-        self.window.Read()
+        self.events, self.values = self.window.Read()
         try:
-            self.layout2
             if self.events == 'Roll the dice again':
-                print('ok')
+                return self.ClickPlayAgain()
             else:
                 return self.FinishMessage()
         except:
-            print('There was an error receiving your reply!')
+            return self.ErroMessage()
+
+    def ClickPlayAgain(self):
+        self.window = sg.Window('Data Simulator', layout=self.layout3)
+        self.events, self.values = self.window.Read()
+        try:
+            if self.events == 'play':
+                return self.ReturnPlayAgain()
+            else:
+                return self.FinishMessage()
+        except:
+            return self.ErroMessage()
+
+    def ReturnPlayAgain(self):
+        self.window = sg.Window('Data Simulator', layout=self.layout4)
+        self.events, self.values = self.window.Read()
+        try:
+            if self.events == 'Finish':
+                return self.FinishMessage()
+        except:
+            return self.ErroMessage()
 
     def FinishMessage(self):
         self.window = sg.Window('Data Simulator', layout=self.finish_message)
-        self.window.Read()
-
-    def ChoiceMessage(self):
-        self.window = sg.Window('Data Simulator', layout=self.choice_message)
         self.window.Read()
 
     def ErroMessage(self):
