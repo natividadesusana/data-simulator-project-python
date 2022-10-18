@@ -1,2 +1,2 @@
 # 🎲 data-simulator-project-python
-Creating a data simulator in Python, practicing classes ~
+~ Creating a data simulator in Python, practicing classes
